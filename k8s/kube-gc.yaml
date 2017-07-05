@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: kube-gc
+spec:
+  template:
+    metadata:
+      labels:
+        name: kube-gc
+    spec:
+      nodeSelector:
+        env: dev
+      containers:
+      - name: kube-gc
+        image: gcr.io/nmiu-play/kube-gc:0.0.1
+        imagePullPolicy: Always
