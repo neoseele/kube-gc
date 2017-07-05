@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: kube-gc
+spec:
+  template:
+    metadata:
+      labels:
+        name: kube-gc
+    spec:
+      nodeSelector:
+        env: canary
+      containers:
+        - name: kube-gc
+          image: gcr.io/nmiu-play/kube-gc:0.0.1
+          imagePullPolicy: Always
+          env:
+            - name: DOCKER_API_VERSION
+              value: "1.23"
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
