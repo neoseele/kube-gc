@@ -14,16 +14,15 @@ node {
 
   stage "Deploy Application"
   switch (env.BRANCH_NAME) {
-    // Roll out
+    // Roll out the pods
     case ["master"]:
-      // Change deployed image in canary to the one we just built
       sh("sed -i.bak 's#gcr.io/${project}/${appName}:0.0.1#${imageTag}#' ./k8s/ds.yaml")
       sh("kubectl apply -f k8s/ds.yaml")
       sh("kubectl delete pods -l name=${appName}")
       break
 
-    // do nothing for the other branches
+    // Do not deploy this for any other branches
     default:
-      echo "Do nothing for ${env.BRANCH_NAME}"
+      echo "Not deploying for ${env.BRANCH_NAME}"
   }
 }
