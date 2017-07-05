@@ -17,8 +17,8 @@ node {
     // Roll out the pods
     case ["master"]:
       sh("sed -i.bak 's#gcr.io/${project}/${appName}:0.0.1#${imageTag}#' ./k8s/ds.yaml")
-      sh("kubectl apply -f k8s/ds.yaml")
-      sh("kubectl delete pods -l name=${appName}")
+      sh("kubectl -n default apply -f k8s/ds.yaml")
+      sh("kubectl -n default delete pods -l name=${appName}")
       break
 
     // Do not deploy this for any other branches
