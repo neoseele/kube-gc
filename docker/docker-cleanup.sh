@@ -25,10 +25,9 @@ do
   #diff=$(expr $(date +"%s") - $(date -j -f %Y-%m-%dT%H:%M:%S "$fini" +"%s"))
   if [ $diff -gt 86400 ]
   then
-     $DOCKER_BIN rm -v $cid >>$LOG 2>&1
+     echo "$DOCKER_BIN rm -v $cid >>$LOG 2>&1"
   fi
 done
-
 
 $DOCKER_BIN images --no-trunc | grep -v REPOSITORY | while read line
 do
@@ -41,13 +40,12 @@ do
   fi
   if [ "$repo_tag"x = "<none>:<none>"x ]
   then
-    $DOCKER_BIN rmi $image_id >>$LOG 2>&1
+    echo "$DOCKER_BIN rmi $image_id >>$LOG 2>&1"
   else
-    $DOCKER_BIN rmi $repo_tag >>$LOG 2>&1
+    echo "$DOCKER_BIN rmi $repo_tag >>$LOG 2>&1"
   fi
 done
 
 rm /tmp/run_image_ids.$$
-
 
 echo "$(date) end-----" >>$LOG
