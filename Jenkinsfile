@@ -23,6 +23,6 @@ node {
 
     // Do not deploy this for any other branches
     default:
-      echo "Not deploying for ${env.BRANCH_NAME}"
+      echo "Not deploying ${env.BRANCH_NAME}"
   }
 }
