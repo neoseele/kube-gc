@@ -8,8 +8,8 @@ spec:
       labels:
         name: kube-gc
     spec:
-      nodeSelector:
-        env: canary
+      # nodeSelector:
+      #   env: canary
       containers:
         - name: kube-gc
           image: gcr.io/nmiu-play/kube-gc:0.0.1

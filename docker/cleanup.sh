@@ -3,12 +3,12 @@
 
 >/tmp/run_image_ids.$$
 
-DOCKER_BIN=/usr/bin/docker
-LOG=/var/log/docker-cleanup.log
+DOCKER_BIN=`which docker`
+#LOG=/var/log/docker-cleanup.log
 
 rm /tmp/run_image_ids.$$
 
-echo "$(date) start-----" >>$LOG
+echo "$(date) start-----"
 
 $DOCKER_BIN ps --no-trunc -a -q | while read cid
 do
@@ -25,7 +25,9 @@ do
   #diff=$(expr $(date +"%s") - $(date -j -f %Y-%m-%dT%H:%M:%S "$fini" +"%s"))
   if [ $diff -gt 86400 ]
   then
-     $DOCKER_BIN rm -v $cid >>$LOG 2>&1
+    cmd="$DOCKER_BIN rm -v $cid 2>&1"
+    echo "running: $cmd"
+    #eval $cmd
   fi
 done
 
@@ -40,12 +42,16 @@ do
   fi
   if [ "$repo_tag"x = "<none>:<none>"x ]
   then
-    $DOCKER_BIN rmi $image_id >>$LOG 2>&1
+    cmd="$DOCKER_BIN rmi $image_id 2>&1"
+    echo "running: $cmd"
+    #eval $cmd
   else
-    $DOCKER_BIN rmi $repo_tag >>$LOG 2>&1
+    cmd="$DOCKER_BIN rmi $repo_tag 2>&1"
+    echo "running: $cmd"
+    #eval $cmd
   fi
 done
 
 rm /tmp/run_image_ids.$$
 
-echo "$(date) end-----" >>$LOG
+echo "$(date) end-----"
