@@ -27,7 +27,7 @@ do
   then
     cmd="$DOCKER_BIN rm -v $cid 2>&1"
     echo "running: $cmd"
-    #eval $cmd
+    eval $cmd
   fi
 done
 
@@ -44,11 +44,11 @@ do
   then
     cmd="$DOCKER_BIN rmi $image_id 2>&1"
     echo "running: $cmd"
-    #eval $cmd
+    eval $cmd
   else
     cmd="$DOCKER_BIN rmi $repo_tag 2>&1"
     echo "running: $cmd"
-    #eval $cmd
+    eval $cmd
   fi
 done
 
