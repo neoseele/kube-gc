@@ -15,7 +15,7 @@ node {
   stage "Deploy Application"
   switch (env.BRANCH_NAME) {
     // Roll out the pods
-    case ["master"]:
+    case ["prod"]:
       sh("sed -i.bak 's#gcr.io/${project}/${appName}:0.0.1#${imageTag}#' ./k8s/ds.yaml")
       sh("kubectl -n default apply -f k8s/ds.yaml")
       sh("kubectl -n default delete pods -l name=${appName}")
