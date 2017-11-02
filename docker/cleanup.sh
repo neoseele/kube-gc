@@ -1,10 +1,16 @@
 #!/bin/sh
 # From https://github.com/HardySimpson/docker-cleanup
 
->/tmp/run_image_ids.$$
-
 DOCKER_BIN=`which docker`
 #LOG=/var/log/docker-cleanup.log
+
+function docker_rm {
+  cmd="$DOCKER_BIN rm -v $1 2>&1"
+  echo "running: $cmd"
+  eval $cmd
+}
+
+>/tmp/run_image_ids.$$
 
 rm /tmp/run_image_ids.$$
 
@@ -19,15 +25,17 @@ do
     echo $id >>/tmp/run_image_ids.$$
     continue
   fi
+
   fini=$($DOCKER_BIN inspect -f '{{.State.FinishedAt}}' $cid | awk -F. '{print $1}')
-  diff=$(expr $(date +"%s") - $(date --date="$fini" +"%s"))
-  #for MacOs
-  #diff=$(expr $(date +"%s") - $(date -j -f %Y-%m-%dT%H:%M:%S "$fini" +"%s"))
-  if [ $diff -gt 86400 ]
+
+  if [ "$fini"x = "0001-01-01T00:00:00Z"x ]
   then
-    cmd="$DOCKER_BIN rm -v $cid 2>&1"
-    echo "running: $cmd"
-    eval $cmd
+    docker_rm $cid
+  else
+    diff=$(expr $(date +"%s") - $(date --date="$fini" +"%s"))
+    #for MacOs
+    #diff=$(expr $(date +"%s") - $(date -j -f %Y-%m-%dT%H:%M:%S "$fini" +"%s"))
+    [ $diff -gt 86400 ] && docker_rm $cid
   fi
 done
 
