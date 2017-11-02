@@ -4,4 +4,4 @@ RUN apk add --no-cache bash gawk sed grep bc coreutils
 
 COPY cleanup.sh /bin/
 
-CMD ["bash", "-c", "while true; sleep 10; done"]
+CMD ["bash", "-c", "while true; do sleep 10; done"]
