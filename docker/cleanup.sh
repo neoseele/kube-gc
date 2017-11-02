@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # From https://github.com/HardySimpson/docker-cleanup
 
 DOCKER_BIN=`which docker`

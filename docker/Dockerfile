@@ -1,7 +1,7 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
-RUN apk add --no-cache docker
+RUN apk add --no-cache bash gawk sed grep bc coreutils
 
 COPY cleanup.sh /bin/
 
-CMD ["/bin/sh", "-c", "while true; do echo `hostname`; sleep 10; done"]
+CMD ["bash", "-c", "while true; sleep 10; done"]
